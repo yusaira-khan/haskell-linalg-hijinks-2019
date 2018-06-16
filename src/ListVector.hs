@@ -1,7 +1,9 @@
 module ListVector
     ( ListVector,
-    	parseStringsToInts,
-    	printVector
+    	average,
+    	movingAverage,
+    	(+),
+    	(.)
     ) where
 import Control.Monad
 import Control.Applicative
