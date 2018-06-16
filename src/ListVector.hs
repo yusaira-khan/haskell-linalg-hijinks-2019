@@ -1,5 +1,6 @@
 module ListVector
-    ( ListVector,
+    ( Scalar,
+    	ListVector,
     	average,
     	movingAverage,
     	(+),
@@ -31,11 +32,11 @@ movingAverage window vec =
 	in let init = windI * firstEl 
 	in foldr movingSum (init,firstEl)
 
-(+) :: LineVector -> LineVector -> LineVector
+(+) :: ListVector -> ListVector -> ListVector
 (+) = zipWith (+)
 
-(.) :: LineVector -> LineVector -> LineVector
+(.) :: ListVector -> ListVector -> ListVector
 (.) = zipWith (*)
 dotProduct = (.)
 
-(*) :: LineVector -> LineVector -> LineVector
+(*) :: ListVector -> ListVector -> ListVector
