@@ -18,7 +18,10 @@ type ListMatrix = [ListVector.ListVector]
 (+) :: ListMatrix -> ListMatrix -> ListMatrix
 (+) = zipWith (+)
 
-transpose :: ListMatrix -> ListMatrix	
+transpose :: ListMatrix -> ListMatrix
+transpose [] = []
+transpose [a] = [a]
+transpose a = 
 
 determinant :: ListMatrix -> Scalar
 
