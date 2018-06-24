@@ -12,5 +12,14 @@ import Control.Applicative
 import Data.List
 import Debug.Trace
 
-(+) :: ListVector -> ListVector -> ListVector
+type ListMatrix = [ListVector.ListVector]
+
+
+(+) :: ListMatrix -> ListMatrix -> ListMatrix
 (+) = zipWith (+)
+
+transpose :: ListMatrix -> ListMatrix	
+
+determinant :: ListMatrix -> Scalar
+
+(*) :: ListMatrix -> ListMatrix -> ListMatrix
