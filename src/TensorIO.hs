@@ -4,13 +4,13 @@ module TensorIO
     	printVector
     ) where
 
-parseStringToInts :: String -> [Int]
+parseStringToInts :: String -> [Double]
 parseStringsToInts =
-    fmap (read :: String -> Int) . words $
+    fmap (read :: String -> Double) . words $
 
-readVector :: IO [Int]
+readVector :: IO [Double]
 readVector = 
-	getLine >>= \line
+	getLine >>= \line ->
 	return $ parseStringToInts line
-printVector :: [Int] -> IO()
+printVector :: [Double] -> IO()
 printVector = putStrLn $ show 

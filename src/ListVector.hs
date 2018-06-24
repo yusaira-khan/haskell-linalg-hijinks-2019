@@ -27,7 +27,7 @@ movingAverage :: Int -> ListVector -> ListVector
 movingAverage 0 vec = []
 movingAverage window [] = []
 movingAverage window vec = 
-	let windfafljaI = fromIntegral window
+	let windI = fromIntegral window
 	in let firstEl = head vec
 	in let init = windI * firstEl 
 	in foldr movingSum (init,firstEl)
@@ -39,4 +39,8 @@ movingAverage window vec =
 (.) = foldr (+) 0.0 . zipWith (*) 
 dotProduct = (.)
 
-(*) :: ListVector -> ListVector -> ListVector
+--crossproduct :: ListVector -> ListVector -> ListVector
+
+scalarMultiply :: Scalar -> Listvector -> ListVector
+scalarMultiply scal =
+	map (scal*) 
