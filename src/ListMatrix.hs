@@ -46,7 +46,7 @@ multiply :: ListMatrix -> ListMatrix -> ListMatrix
 multiply a b=
     transpose a >>= \vec_a
     b >>= \vec_b
-    vec_a . vec_b
+    vec_a ListVector.. vec_b
 (*)=multiply
 
 scalarMultiply :: Scalar -> ListMatrix -> ListMatrix

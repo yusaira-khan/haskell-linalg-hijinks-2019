@@ -38,7 +38,7 @@ movingAverage window vec =
 
 (.) :: ListVector -> ListVector -> Scalar
 (.) = foldr (+) 0.0 . zipWith (*)
-dotProduct = (.)
+dotProduct = (ListVector..)
 
 --crossproduct :: ListVector -> ListVector -> ListVector
 

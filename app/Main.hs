@@ -1,6 +1,11 @@
+import System.IO
+import ListVector
+import ListMatrix
 module Main where
 
-import Lib
+mat::ListMatrix.ListMatrix
+mat = [[1,2],[3,4]]
 
 main :: IO ()
-main = someFunc
+main =  do
+    putStrLn $ show mat
