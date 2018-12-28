@@ -1,7 +1,7 @@
 module TensorIO
     ( readTensor,
-    	parseStringsToInts,
-    	printVector
+        parseStringsToInts,
+        printVector
     ) where
 
 parseStringToInts :: String -> [Double]
@@ -10,7 +10,7 @@ parseStringsToInts =
 
 readVector :: IO [Double]
 readVector = 
-	getLine >>= \line ->
-	return $ parseStringToInts line
+    getLine >>= \line ->
+    return $ parseStringToInts line
 printVector :: [Double] -> IO()
 printVector = putStrLn $ show 

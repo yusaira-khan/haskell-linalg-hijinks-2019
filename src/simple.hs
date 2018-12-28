@@ -6,5 +6,5 @@ mat::Matrix
 mat = [[1,2],[3,4]]
 
 main :: IO ()
-main =  do 
+main =  do
     putStrLn $ show mat
