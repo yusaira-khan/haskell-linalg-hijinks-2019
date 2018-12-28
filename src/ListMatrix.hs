@@ -27,6 +27,13 @@ transpose mat =
     in let ts = map tail mat
     in hs :: (transpose ts)
 
+
+listMatrixSlice  :: (Int,Int) -> (Int,Int) -> (Int,Int(-> ListMatrix -> (Int,Int) -> ListMatrix
+listMatrixSlice (rowSliceStrideConst,colSliceStrideConst) (rowSliceStart,colSliceStart) (rowSliceLen,colSliceLen) mat=
+    let slicedcols = ListVector.listSlice colSliceStrideConst  colSliceStrideConst colSliceStart colSliceLen mat colSliceStride
+    in map slicedcols (ListVector.listVectorSlice rowSliceStrideConst rowSliceStrideConst rowSliceStart rowSliceLen)
+
+
 --- a b c
 --- d e f
 --- g h i

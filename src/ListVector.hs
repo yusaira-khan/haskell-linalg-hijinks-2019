@@ -24,6 +24,20 @@ movingSum :: Double -> Double -> ListVector
 movingSum currentEl (previousSum, previousEl) =
     (previousSum-previousEl+currentEl,currentEl)
 
+listSlice :: Int -> Int -> Int -> Int-> [a]  -> [a]
+listSlice  sliceStrideConst sliceStrideSoFar sliceStart sliceLen []   = undefinded
+listSlice  sliceStrideConst sliceStrideSoFar sliceStart sliceLen vec@(element:rest)   =
+    if sliceLen <= 0
+        then []
+        else if sliceStart > 0
+            then vectorSlice sliceStrideConst sliceStrideSoFar (sliceStart-1) sliceLen rest
+            else if sliceStrideSoFar > 1
+                then vectorSlice sliceStrideConst (sliceStrideSoFar-1) 0 sliceLen rest
+                else element:(vectorSlice sliceStrideConst sliceStrideConst 0 sliceLen rest )
+
+listVectorSlice  :: Int  -> Int -> Int -> Int-> ListVector -> ListVector
+listVectorSlice stride = ListVector.listSlice stride stride
+
 movingAverage :: Int -> ListVector -> ListVector
 movingAverage 0 vec = []
 movingAverage window [] = []
