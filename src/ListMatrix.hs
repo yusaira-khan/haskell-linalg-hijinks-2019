@@ -10,6 +10,7 @@ import ListVector
 import Control.Monad
 import Control.Applicative
 import Data.List
+import Data.Bool
 import Debug.Trace
 
 type ListMatrix = [ListVector.ListVector]
@@ -27,13 +28,21 @@ transpose mat =
     in let ts = map tail mat
     in hs :: (transpose ts)
 
-
 listMatrixSlice  :: (Int,Int) -> (Int,Int) -> (Int,Int(-> ListMatrix -> (Int,Int) -> ListMatrix
 listMatrixSlice (rowSliceStrideConst,colSliceStrideConst) (rowSliceStart,colSliceStart) (rowSliceLen,colSliceLen) mat=
     let slicedcols = ListVector.listSlice colSliceStrideConst  colSliceStrideConst colSliceStart colSliceLen mat colSliceStride
-    in map slicedcols (ListVector.listVectorSlice rowSliceStrideConst rowSliceStrideConst rowSliceStart rowSliceLen)
+    in map  (ListVector.listVectorSlice rowSliceStrideConst rowSliceStrideConst rowSliceStart rowSliceLen) slicedcols
 
+checkMatrixColsEqualLen::ListMatrix->Bool
+-- ^checkMatrixColsEqualLen function checks if all the columns of a matrix are equal size
+checkMatrixColsEqualLen = False
 
+getValidMatrixRowCol :: ListMatrix -> (Int,Int)
+-- ^getValidMatrixRowCol function performs checks to see the validity of the function and returns its number of rows and columns
+getValidMatrixRowCol mat =(0,0)
+
+checkSquareMatrix :: ListMatrix -> Bool
+checkSquareMatrix mat = undefined
 --- a b c
 --- d e f
 --- g h i
