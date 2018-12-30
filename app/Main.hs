@@ -1,7 +1,8 @@
+module Main where
+
 import System.IO
 import ListVector
 import ListMatrix
-module Main where
 
 mat::ListMatrix.ListMatrix
 mat = [[1,2],[3,4]]

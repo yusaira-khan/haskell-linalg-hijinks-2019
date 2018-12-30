@@ -1,16 +1,16 @@
 module TensorIO
-    ( readTensor,
+    ( readVector,
         parseStringsToInts,
         printVector
     ) where
 
-parseStringToInts :: String -> [Double]
-parseStringsToInts =
-    fmap (read :: String -> Double) . words $
+parseStringsToInts :: String -> [Double]
+parseStringsToInts s =
+    fmap (read :: String -> Double) . words $ s
 
 readVector :: IO [Double]
 readVector =
     getLine >>= \line ->
-    return $ parseStringToInts line
+    return $ parseStringsToInts line
 printVector :: [Double] -> IO()
-printVector = putStrLn $ show
+printVector a = putStrLn $ show a
