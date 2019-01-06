@@ -28,7 +28,11 @@ vec = [1,2,3,2,4,6]
 --         in av2 >>= \a2 ->
 --         let mat = av1:av2:[]
 --         in foldr (\v a -> printVector v) mat (putStr "")
+print2rows :: ListMatrix.ListMatrix -> IO()
+print2rows mat = TensorIO.printVector  (head mat) >> TensorIO.printVector  (head $tail mat)
+print3rows mat = TensorIO.printVector  (head mat) >> print2rows (tail mat)
 main :: IO ()
-main = print $ ListMatrix.determinant mat2
+main = print3rows mat3 >> print3rows (ListMatrix.transpose mat3)
+-- main = print $ ListMatrix.determinant mat2
 
 -- main = TensorIO.printVector $ ListVector.listVectorSlice 4 3 vec

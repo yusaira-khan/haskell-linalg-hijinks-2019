@@ -4,6 +4,7 @@ module ListMatrix
         (ListMatrix.+),
         -- (*),
         determinant,
+        ListMatrix.transpose,
         inverseStructure
     ) where
 
@@ -21,13 +22,13 @@ type ListMatrix = [ListVector.ListVector]
 (+) = zipWith (ListVector.+)
 
 -- todo: handle infinite
--- transpose :: ListMatrix -> ListMatrix
--- transpose [] = []
--- transpose a_all@[a] = a_all
--- transpose mat =
---     let hs = map head mat
---     in let ts = map tail mat
---     in hs :: transpose ts
+transpose :: ListMatrix -> ListMatrix
+transpose [] = []
+transpose [a] = [a]
+transpose mat =
+    let hs = map head mat
+    in let ts = map tail mat
+    in hs : ListMatrix.transpose ts
 
 listMatrixSlice  :: (Int,Int) -> (Int,Int)-> ListMatrix -> ListMatrix
 listMatrixSlice (rowSliceStart,colSliceStart) (rowSliceLen,colSliceLen) mat=
@@ -58,7 +59,7 @@ checkSquareMatrix mat = undefined
 
 determinant :: ListMatrix -> Scalar
 determinant [[a]]  = a
-determinant [[a,c],[b,d]]  = a Prelude.*d - b Prelude.*c
+-- determinant [[a,c],[b,d]]  = a Prelude.*d - b Prelude.*c
 -- determinant  currentMat@[[a,d,g],[b,e,h],[c,f,i]]  =
 --     a Prelude.* determinant [[e,h],[f,i]]  - b Prelude.* determinant [[d,g],[f,i]]  Prelude.+ c Prelude.* determinant [[d,g],[e,h]]
 determinant  mat@(firstRow:rest) =
