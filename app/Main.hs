@@ -5,8 +5,17 @@ import ListVector
 import ListMatrix
 import TensorIO
 
-mat::ListMatrix.ListMatrix
-mat = [[1,2],[3,4]]
+mat2::ListMatrix.ListMatrix
+-- 1 3
+-- 2 4
+mat2 = [[1,2],[3,4]]
+
+
+mat3::ListMatrix.ListMatrix
+-- 1 3 2
+-- 2 1 3
+-- 3 2 1
+mat3 = [[1,2,3],[3,1,2],[2,3,1]]
 
 vec::ListVector.ListVector
 vec = [1,2,3,2,4,6]
@@ -20,4 +29,6 @@ vec = [1,2,3,2,4,6]
 --         let mat = av1:av2:[]
 --         in foldr (\v a -> printVector v) mat (putStr "")
 main :: IO ()
-main = TensorIO.printVector $ ListVector.listVectorSlice 1 0 3 vec
+main = print $ ListMatrix.determinant mat2
+
+-- main = TensorIO.printVector $ ListVector.listVectorSlice 4 3 vec

@@ -27,19 +27,17 @@ average vec =
 -- movingSum currentEl (previousSum, previousEl) =
 --     (previousSum-previousEl  Prelude.+ currentEl,currentEl)
 
-listSlice :: Int -> Int -> Int -> Int-> [a]  -> [a]
-listSlice  sliceStrideConst sliceStrideSoFar sliceStart sliceLen []   = undefined
-listSlice  sliceStrideConst sliceStrideSoFar sliceStart sliceLen vec@(element:rest)   =
+listSlice :: Int -> Int-> [a] -> [a]
+listSlice sliceStart sliceLen []= []
+listSlice sliceStart sliceLen vec@(element:rest)=
     if sliceLen <= 0
         then []
         else if sliceStart > 0
-            then listSlice sliceStrideConst sliceStrideSoFar (sliceStart-1) sliceLen rest
-            else if sliceStrideSoFar > 1
-                then listSlice sliceStrideConst (sliceStrideSoFar-1) 0 sliceLen rest
-                else element:(listSlice sliceStrideConst sliceStrideConst 0 sliceLen rest )
+            then listSlice (sliceStart-1) sliceLen rest
+            else element:(listSlice 0 (sliceLen-1) rest )
 
-listVectorSlice  :: Int -> Int -> Int-> ListVector -> ListVector
-listVectorSlice stride = ListVector.listSlice stride stride
+listVectorSlice  :: Int -> Int-> ListVector -> ListVector
+listVectorSlice  = ListVector.listSlice
 
 -- movingAverage :: Int -> ListVector -> ListVector
 -- movingAverage 0 vec = []
