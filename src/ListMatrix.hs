@@ -74,11 +74,13 @@ inverseStructure :: ListMatrix -> ListMatrix
 inverseStructure [[a,c],[b,d]] =
     [[d,-1 Prelude.* c], [-1 Prelude.* b,a]]
 
+mutliplybyvector :: ListVector -> ListMatrix -> ListVector
+mutliplybyvector vec_a b =
+    map (\vec_b ->
+    ((ListVector.. )vec_a vec_b)) b
 multiply :: ListMatrix -> ListMatrix -> ListMatrix
 multiply a b=
-    ListMatrix.transpose a >>= \vec_a ->
-    b >>= \vec_b ->
-    (vec_a ListVector.. vec_b)
+    map (\vec_a -> mutliplybyvector vec_a b) (ListMatrix.transpose a)
 (*)=multiply
 
 scalarMultiply :: Scalar -> ListMatrix -> ListMatrix
