@@ -2,6 +2,7 @@
 module ListMatrix
     ( ListMatrix,
         (ListMatrix.+),
+        multiply,
         -- (*),
         determinant,
         ListMatrix.transpose,
@@ -24,11 +25,11 @@ type ListMatrix = [ListVector.ListVector]
 -- todo: handle infinite
 transpose :: ListMatrix -> ListMatrix
 transpose [] = []
-transpose [a] = [a]
+-- transpose [a] = [a]
 transpose mat =
     let hs = map head mat
     in let ts = map tail mat
-    in hs : ListMatrix.transpose ts
+    in if length (head ts) ==0 then [hs] else hs : ListMatrix.transpose ts
 
 listMatrixSlice  :: (Int,Int) -> (Int,Int)-> ListMatrix -> ListMatrix
 listMatrixSlice (rowSliceStart,colSliceStart) (rowSliceLen,colSliceLen) mat=
@@ -36,7 +37,7 @@ listMatrixSlice (rowSliceStart,colSliceStart) (rowSliceLen,colSliceLen) mat=
     in let f :: (ListVector.ListVector-> ListVector.ListVector) = (ListVector.listVectorSlice rowSliceStart rowSliceLen)
     in map f slicedcols
 matrixRowMultiSlice ::  Int -> ListMatrix ->[Int] -> [ListMatrix]
-matrixRowMultiSlice  colSliceLen mat [] = []
+matrixRowMultiSlice  rowLen mat [] = []
 matrixRowMultiSlice  rowLen mat rowSliceStart@(cur:next) =
     let slice1 :: (ListVector.ListVector-> ListVector.ListVector) = (ListVector.listVectorSlice 0 cur)
     in let slice2 :: (ListVector.ListVector-> ListVector.ListVector) = (ListVector.listVectorSlice (cur Prelude.+1) (rowLen-1-cur))
@@ -66,7 +67,8 @@ determinant  mat@(firstRow:rest) =
     let (rowNum,colNum) = getValidMatrixTotalRowCol mat
     in let rowsIdxEnumerated = [0..rowNum-1]
     in let signs :: [Scalar] = map (\x->(fromIntegral (x`mod`2)) Prelude.*(-2.0)Prelude.+1.0) rowsIdxEnumerated -- 0-> 1,1->-1,2->1,3->-1 ...
-    in let partialDeterminant :: ListVector= zipWith3 (\s e m-> s Prelude.* e Prelude.* (determinant mat)) signs firstRow rest
+    in let slices = matrixRowMultiSlice rowNum  mat rowsIdxEnumerated -- zipWith ()rowsIdxEnumerated (repeat rest)
+    in let partialDeterminant :: ListVector= zipWith3 (\s e m-> s Prelude.* e Prelude.* (determinant m)) signs firstRow slices
     in foldr (Prelude.+) 0 partialDeterminant
 
 
@@ -79,7 +81,7 @@ mutliplybyvector vec_a b =
     map (\vec_b ->
     ((ListVector.. )vec_a vec_b)) b
 multiply :: ListMatrix -> ListMatrix -> ListMatrix
-multiply a b=
+multiply  a b=
     map (\vec_a -> mutliplybyvector vec_a b) (ListMatrix.transpose a)
 (*)=multiply
 
