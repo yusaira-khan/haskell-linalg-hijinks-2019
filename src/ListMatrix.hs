@@ -81,8 +81,8 @@ mutliplybyvector vec_a b =
     map (\vec_b ->
     ((ListVector.. )vec_a vec_b)) b
 multiply :: ListMatrix -> ListMatrix -> ListMatrix
-multiply  a b=
-    map (\vec_a -> mutliplybyvector vec_a b) (ListMatrix.transpose a)
+multiply  b a=
+    ListMatrix.transpose(map (\vec_a -> mutliplybyvector vec_a b) (ListMatrix.transpose a))
 (*)=multiply
 
 scalarMultiply :: Scalar -> ListMatrix -> ListMatrix
