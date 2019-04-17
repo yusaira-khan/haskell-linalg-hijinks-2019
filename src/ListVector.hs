@@ -2,7 +2,7 @@ module ListVector
     ( Scalar,
         ListVector,
         average,
-        -- movingAverage,
+        movingAverage,
         listSlice,
         listVectorSlice,
         (ListVector.+),
@@ -22,10 +22,12 @@ average vec =
     let (total_sum, total_count) = foldr (\curr_val (curr_sum,curr_count) -> (curr_sum Prelude.+ curr_val,curr_count Prelude.+ 1) ) (0.0,0) vec
     in total_sum / total_count
 
--- movingSum :: Double -> (Double,Double) -> ListVector
+movingSumHelper :: Scalar -> (ListVector,Scalar,Scalar) -> (ListVector,Scalar,Scalar)
 
--- movingSum currentEl (previousSum, previousEl) =
---     (previousSum-previousEl  Prelude.+ currentEl,currentEl)
+movingSumHelper currentEl (sumlist,previousSum, previousEl) =
+    let s = previousSum-previousEl  Prelude.+ currentEl
+    in (s:sumlist,s,currentEl)
+
 
 listSlice :: Int -> Int-> [a] -> [a]
 listSlice sliceStart sliceLen []= []
@@ -39,14 +41,17 @@ listSlice sliceStart sliceLen vec@(element:rest)=
 listVectorSlice  :: Int -> Int-> ListVector -> ListVector
 listVectorSlice  = ListVector.listSlice
 
--- movingAverage :: Int -> ListVector -> ListVector
--- movingAverage 0 vec = []
--- movingAverage window [] = []
--- movingAverage window vec =
---     let windI = fromIntegral window
---     in let firstEl = head vec
---     in let init = windI * firstEl
---     in foldr movingSum (init,firstEl)
+movingAverage :: Int -> ListVector -> ListVector
+movingAverage 0 vec = []
+movingAverage window [] = []
+movingAverage window vec =
+    let windI = fromIntegral window
+    in let firstEl = head vec
+    in let init =  windI * firstEl
+    in let (s,_,_) =foldr movingSumHelper ([],init,firstEl) vec
+    --in let l = --[y | x <-[1..],let y= if x<windI then x else windI ]
+    in s
+    --in map (\s'->s'/windI) s --zipWith (/) s l
 
 (+) :: ListVector -> ListVector -> ListVector
 (+) = zipWith (Prelude.+)
