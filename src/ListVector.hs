@@ -62,3 +62,7 @@ dotProduct = (ListVector..)
 scalarMultiply :: Scalar -> ListVector -> ListVector
 scalarMultiply scal =
     map (scal*)
+
+
+
+----------write kalman filter: use monads for state
