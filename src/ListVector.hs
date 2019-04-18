@@ -22,11 +22,11 @@ average vec =
     let (total_sum, total_count) = foldr (\curr_val (curr_sum,curr_count) -> (curr_sum Prelude.+ curr_val,curr_count Prelude.+ 1) ) (0.0,0) vec
     in total_sum / total_count
 
-movingSumHelper :: Scalar -> (ListVector,Scalar,Scalar) -> (ListVector,Scalar,Scalar)
-
-movingSumHelper currentEl (sumlist,previousSum, previousEl) =
-    let s = previousSum-previousEl  Prelude.+ currentEl
-    in (s:sumlist,s,currentEl)
+movingWindowRight :: Int -> Scalar -> [ListVector] -> [ListVector]
+movingWindowRight windowSize currentEl windowEls =
+    let lastWindow = if null windowEls then [] else head windowEls
+    in let preCurWindow = if length lastWindow < windowSize then lastWindow else init lastWindow
+    in (currentEl:preCurWindow):windowEls
 
 
 listSlice :: Int -> Int-> [a] -> [a]
@@ -41,17 +41,14 @@ listSlice sliceStart sliceLen vec@(element:rest)=
 listVectorSlice  :: Int -> Int-> ListVector -> ListVector
 listVectorSlice  = ListVector.listSlice
 
+
 movingAverage :: Int -> ListVector -> ListVector
 movingAverage 0 vec = []
 movingAverage window [] = []
-movingAverage window vec =
-    let windI = fromIntegral window
-    in let firstEl = head vec
-    in let init =  windI * firstEl
-    in let (s,_,_) =foldr movingSumHelper ([],init,firstEl) vec
+movingAverage windowLen vec =
+    let windows =foldr (movingWindowRight windowLen) [] vec
     --in let l = --[y | x <-[1..],let y= if x<windI then x else windI ]
-    in s
-    --in map (\s'->s'/windI) s --zipWith (/) s l
+    in map (\s'->((sum s'))/(fromIntegral (genericLength s'))) windows --zipWith (/) s l
 
 (+) :: ListVector -> ListVector -> ListVector
 (+) = zipWith (Prelude.+)
