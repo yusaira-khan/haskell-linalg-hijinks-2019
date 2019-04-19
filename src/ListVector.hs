@@ -54,7 +54,7 @@ movingAverage windowLen vec =
 (+) = zipWith (Prelude.+)
 
 (.) :: ListVector -> ListVector -> Scalar
-(.) a b = let c = zipWith (*) a b in foldr (Prelude.+) 0.0 c
+(.) a b = let c = zipWith (*) a b in sum c
 dotProduct = (ListVector..)
 
 --crossproduct :: ListVector -> ListVector -> ListVector
