@@ -63,6 +63,30 @@ scalarMultiply :: Scalar -> ListVector -> ListVector
 scalarMultiply scal =
     map (scal*)
 
+data Kalman = Kalman{
+    q :: Scalar, -- process noise variance
+    r :: Scalar, -- measurement noise variance
+    p :: Scalar, -- estimation error variance
+    --k :: Scalar, -- kalman gain
+    x :: Scalar -- last value
+  } deriving (Show)
+    --,Monad
 
+filterK :: Scalar -> [Kalman] -> [Kalman]
+filterK val kals =
+    let kal = head kals
+    in let _p = p kal Prelude.+ q kal
+    in let _k = _p / (_p Prelude.+ r kal)
+    in let _x = x kal  Prelude.+ _k * (val - x kal)
+    in let __p = (1.0  - _k) * _p
+    in Kalman{x=_x,p=__p,q=(q kal),r=(r kal)}:kals
+
+filterKLots :: Kalman -> ListVector -> ListVector
+filterKLots kal vals =
+    if null vals
+        then vals
+        else let _kal = Kalman {p = (p kal), r = (r kal), q =(q kal), x=(last vals)}
+            in let kals = foldr filterK [_kal] vals
+            in map (\__kal -> x __kal) kals
 
 ----------write kalman filter: use monads for state
