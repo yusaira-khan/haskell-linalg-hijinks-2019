@@ -72,8 +72,8 @@ data Kalman = Kalman{
   } deriving (Show)
     --,Monad
 
-filterK :: Scalar -> [Kalman] -> [Kalman]
-filterK val kals =
+filterKRight :: Scalar -> [Kalman] -> [Kalman]
+filterKRight val kals =
     let kal = head kals
     in let _p = p kal Prelude.+ q kal
     in let _k = _p / (_p Prelude.+ r kal)
@@ -81,12 +81,30 @@ filterK val kals =
     in let __p = (1.0  - _k) * _p
     in Kalman{x=_x,p=__p,q=(q kal),r=(r kal)}:kals
 
-filterKLots :: Kalman -> ListVector -> ListVector
-filterKLots kal vals =
+filterKLotsRight :: Kalman -> ListVector -> ListVector
+filterKLotsRight kal vals =
     if null vals
         then vals
         else let _kal = Kalman {p = (p kal), r = (r kal), q =(q kal), x=(last vals)}
-            in let kals = foldr filterK [_kal] vals
+            in let kals = foldr filterKRight [_kal] vals
             in map (\__kal -> x __kal) kals
 
+kalmanData :: Kalman -> ListVector -> ListVector
+kalmanData k l =
+    let l' = reverse l in reverse $ filterKLotsRight k l'
 ----------write kalman filter: use monads for state
+
+convolutionsimple :: ListVector -> ListVector -> ListVector
+convolutionsimple  k a =
+    let lk = length k
+    let la = length a
+    in let colsIdxEnumerated = [0..(lk-la)]
+    in let slices = map(\s -> listSlice s lk a)
+    in let dots = map (\s -> dotProduct s k)
+    in dots
+
+correlationsimple :: ListVector -> ListVector -> ListVector
+correlationsimple k a =
+    let k' = reverse k
+    in convolutionsimple k' a
+
